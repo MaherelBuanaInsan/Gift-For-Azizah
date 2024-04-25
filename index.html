@@ -221,20 +221,84 @@
   <script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.3/dist/index.bundle.min.js"></script>
 
   <script>
-    simplyCountdown('.simply-countdown', {
-      year: 2024, // required
-      month: 4, // required
-      day: 26, // required
-      hours: 0, // Default is 0 [0-23] integer
-      words: { //words displayed into the countdown
+    // Function to enable smooth scrolling
+    function enableScroll() {
+      window.scrollTo({
+        top: document.getElementById('home').offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  
+    // Callback function when countdown ends
+    function onCountdownEnd() {
+      document.querySelector('.btn').style.display = 'block'; // Show the button
+      document.body.style.overflow = 'hidden'; // Disable scrolling initially
+    }
+  
+    // Initialize the countdown
+    const simplyCountdownInstance = simplyCountdown('.simply-countdown', {
+      year: 2024,
+      month: 4,
+      day: 26,
+      hours: 0,
+      words: {
         days: { singular: 'hari', plural: 'hari' },
         hours: { singular: 'jam', plural: 'jam' },
         minutes: { singular: 'menit', plural: 'menit' },
         seconds: { singular: 'detik', plural: 'detik' }
       },
+      onEnd: onCountdownEnd // Call onCountdownEnd function when countdown ends
     });
-  </script>
+  
+    // Hide the button initially
+    document.querySelector('.btn').style.display = 'none';
+  
+    // Add event listener to the button to enable scrolling
+    document.querySelector('.btn').addEventListener('click', function() {
+      enableScroll(); // Call the enableScroll function when the button is clicked
+      document.body.style.overflow = 'auto'; // Allow scrolling
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+  const rootElement = document.querySelector(":root");
+  const countdownButton = document.querySelector('.btn');
+  let isButtonClicked = false;
 
+  // Function to disable scrolling
+  function disableScroll() {
+    rootElement.style.overflow = 'hidden';
+    rootElement.style.scrollBehavior = 'auto';
+  }
+
+  // Function to enable scrolling
+  function enableScroll() {
+    rootElement.style.overflow = 'visible';
+    rootElement.style.scrollBehavior = 'smooth';
+  }
+
+  // Function to handle button click
+  function handleButtonClick() {
+    isButtonClicked = true;
+    enableScroll();
+  }
+
+  // Disable scroll initially
+  disableScroll();
+
+  // Add event listener to countdown button
+  countdownButton.addEventListener('click', handleButtonClick);
+
+  // Add event listener to detect scrolling
+  window.addEventListener('scroll', function() {
+    if (!isButtonClicked) {
+      disableScroll();
+    }
+  });
+});
+
+  </script>
+  
+  
+  
   <script>
     const stickyTop = document.querySelector('.sticky-top');
     const offcanvas = document.querySelector('.offcanvas');
